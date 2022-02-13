@@ -1,0 +1,23 @@
+html {
+	background-color: black;
+	text-align: center;
+	font-family: 'Courier New', Courier, monospace;
+	color: white;
+}
+body {
+	display: grid;
+	justify-content: center;
+	justify-items: center;
+}
+label {
+	display: block;
+	margin: 8px auto 4px;
+}
+input {
+	display: block;
+	margin-bottom: 8px;
+}
+button {
+	margin-top: 16px;
+	display: inline-block;
+}
