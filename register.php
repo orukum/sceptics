@@ -1,3 +1,23 @@
+<?php
+require_once 'db.php';
+require_once 'utils.php';
+
+session_start();
+
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+	// TODO: Handle registration
+	return http_response_code(405);
+} elseif($_SERVER['REQUEST_METHOD'] === 'GET') {
+	if(!isset($_SESSION['nonces'])) {
+		$_SESSION['nonces'] = array('register' => getNonce());
+	} else {
+		$_SESSION['nonces']['register'] = getNonce();
+	}
+} else {
+	return http_response_code(405);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,12 +30,13 @@
 </head>
 <body>
 	<h1 id="heading">SIGN UP</h1>
-	<form>
+	<form action="register.php">
 		<label for="username">USERNAME</label>
 		<input id="username" name="username" type="text"/>
+		<input name="nonce" type="hidden" value="<?php echo $_SESSION['nonces']['register'] ?>"/>
 		<button type="submit">Submit</button>
 	</form>
-	<p>Already registered? <a id="login" href="login.html">Log in!</a></p>
+	<p>Already registered? <a id="login" href="login.php">Log in!</a></p>
 	<script>
 		const $ = document.querySelector.bind(document), $$ = document.querySelectorAll.bind(document);
 
