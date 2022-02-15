@@ -5,7 +5,7 @@ require_once 'utils.php';
 session_start();
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
-	// TODO: Handle registration
+	
 	return http_response_code(405);
 } elseif($_SERVER['REQUEST_METHOD'] === 'GET') {
 	if(!isset($_SESSION['nonces'])) {
@@ -26,7 +26,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Register on Sceptics</title>
 	<link rel="stylesheet" href="styles/main.css">
-	<script src="lib/qrcode.js" defer></script>
+	<script src="lib/qrcode.js"></script>
 </head>
 <body>
 	<h1 id="heading">SIGN UP</h1>
@@ -35,13 +35,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 		<input id="username" name="username" type="text"/>
 		<input name="nonce" type="hidden" value="<?php echo $_SESSION['nonces']['register'] ?>"/>
 		<button type="submit">Submit</button>
+		<div id="qrcode" style="background-color: white; width: 500px;"></div>
 	</form>
 	<p>Already registered? <a id="login" href="login.php">Log in!</a></p>
 	<script>
 		const $ = document.querySelector.bind(document), $$ = document.querySelectorAll.bind(document);
 
-		/*let issuer = 'Sceptics', user = 'andrew@test.com', secret = 'c2RmdW5pbmlkZmpua2Rmam5rYXNkZnNkZmtuZGg3dThyamltb25mOXVoOWZoc3Vp';
-		QRCode.toString('otpauth://totp/' + issuer + '%20(' + user + ')?secret=' + secret, {errorCorrectionLevel: 'H', type: 'svg'}).then(function(svg) {
+		/*let issuer = 'Sceptics', user = 'andrew@test.com', secret = 'F72NOPNJ3F6CDZYDEV5N466MIEJ3QRP6';
+		console.log('otpauth://totp/' + issuer + '?secret=' + secret);
+		QRCode.toString('otpauth://totp/' + issuer + '?secret=' + secret, {errorCorrectionLevel: 'H', type: 'svg'}).then(function(svg) {
 			$('#qrcode').innerHTML = svg;
 		});*/
 	</script>	

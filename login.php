@@ -5,7 +5,7 @@ require_once 'utils.php';
 session_start();
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
-	// TODO: Handle registration
+	// TODO: Handle login
 	return http_response_code(405);
 } elseif($_SERVER['REQUEST_METHOD'] === 'GET') {
 
