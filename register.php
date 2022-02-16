@@ -35,13 +35,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 		<input id="username" name="username" type="text"/>
 		<input name="nonce" type="hidden" value="<?php echo $_SESSION['nonces']['register'] ?>"/>
 		<button type="submit">Submit</button>
-		<div id="qrcode" style="background-color: white; width: 500px;"></div>
+		<!--div id="qrcode" style="background-color: white; width: 500px;"></div-->
 	</form>
 	<p>Already registered? <a id="login" href="login.php">Log in!</a></p>
 	<script>
 		const $ = document.querySelector.bind(document), $$ = document.querySelectorAll.bind(document);
 
-		/*let issuer = 'Sceptics', user = 'andrew@test.com', secret = 'F72NOPNJ3F6CDZYDEV5N466MIEJ3QRP6';
+		/*let issuer = 'Sceptics', user = 'andrew@test.com', secret = 'XBM654Q4DDJKFGPDXZRBD3X533ATI5ZYRLQ4LRQF6XLUJOFHTH2JTBOC3M5SK2T6';
 		console.log('otpauth://totp/' + issuer + '?secret=' + secret);
 		QRCode.toString('otpauth://totp/' + issuer + '?secret=' + secret, {errorCorrectionLevel: 'H', type: 'svg'}).then(function(svg) {
 			$('#qrcode').innerHTML = svg;

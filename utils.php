@@ -7,14 +7,14 @@ function getNonce() {
 }
 
 /**
- * Generates a 384-bit shared secret
+ * Generates a 320-bit shared secret
  */
 function getSecret() {
-	return base64URL_encode(random_bytes(48));
+	return base32_encode(random_bytes(40));
 }
 
 /**
- * Transforms a byte string to a PHP base-32
+ * Transforms a byte string to a PHP base-32 string
  */
 function bintobase32($hex) {
 	return gmp_strval(gmp_init(bin2hex($hex), 16), 32);
@@ -62,15 +62,14 @@ function base64URL_decode($str) {
  */
 function dynamicTruncation($str) {
 	$offset = hexdec(substr($str, -1)) * 2;
-	return (hexdec(substr($str, $offset, 8)) << 1) / 2;
+	return hexdec(substr($str, $offset, 8)) & 0x7FFFFFFF;
 }
 
 /**
- * Hashes and truncates a shared secret into a TOTP
+ * Hashes and truncates a shared secret into a TOTP (from RFC 4226, RFC 6238)
  */
-function getTOTP($secret, $steps = 0) {
-	$hs = hash_hmac('sha1', floor(time() / 30) + $steps, $secret); // TODO: Need to convert int to byte array
-	$num = dynamicTruncation($hr);
-	return $num % 1000000;
+function getTOTP($secret, $step = 0) {
+	$hs = hash_hmac('sha1', pack('N*', 0) . pack("N*", floor(time() / 30) + $step), $secret);
+	return dynamicTruncation($hs) % 1000000;
 }
 ?>
