@@ -25,10 +25,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Register on Sceptics</title>
+	<link rel="stylesheet" href="styles/shell.css">
 	<link rel="stylesheet" href="styles/main.css">
-	<script src="lib/qrcode.js"></script>
+	<script src="lib/qrcode.js" defer></script>
+	<script type="module" src="modules/shell.js" defer></script>
 </head>
-<body>
+<body id="sceptics">
+	<div class="shell"></div>
 	<h1 id="heading">SIGN UP</h1>
 	<form action="register.php">
 		<label for="username">USERNAME</label>
@@ -38,8 +41,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 		<!--div id="qrcode" style="background-color: white; width: 500px;"></div-->
 	</form>
 	<p>Already registered? <a id="login" href="login.php">Log in!</a></p>
-	<script>
-		const $ = document.querySelector.bind(document), $$ = document.querySelectorAll.bind(document);
+	<script type="module">
+		import {shell} from './modules/shell.js';
+		shell.show();
 
 		/*let issuer = 'Sceptics', user = 'andrew@test.com', secret = 'XBM654Q4DDJKFGPDXZRBD3X533ATI5ZYRLQ4LRQF6XLUJOFHTH2JTBOC3M5SK2T6';
 		console.log('otpauth://totp/' + issuer + '?secret=' + secret);

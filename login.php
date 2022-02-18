@@ -21,7 +21,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Log in to Sceptics</title>
+	<link rel="stylesheet" href="styles/shell.css">
 	<link rel="stylesheet" href="styles/main.css">
+	<script type="module" src="modules/shell.js" defer></script>
 </head>
 <body>
 	<h1 id="heading">LOG IN</h1>
@@ -33,8 +35,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 		<button type="submit">Submit</button>
 	</form>
 	<p id="signup-text">New to Sceptics? <a id="signup" href="register.php">Sign up!</a></p>
-	<script>
-		const $ = document.querySelector.bind(document), $$ = document.querySelectorAll.bind(document);
+	<script type="module">
+		import {shell} from './modules/shell.js';
+		shell.show();
 	</script>	
 </body>
 </html>
