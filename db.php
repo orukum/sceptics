@@ -1,9 +1,7 @@
 <?php
-$SQL_SERVER = '';
-$SQL_USER = '';
-$SQL_PASSWORD = '';
-$SQL_DATABASE = '';
+include 'auth.inc';
 
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $SQL = new mysqli($SQL_SERVER, $SQL_USER, $SQL_PASSWORD, $SQL_DATABASE);
 
 /**
@@ -11,27 +9,25 @@ $SQL = new mysqli($SQL_SERVER, $SQL_USER, $SQL_PASSWORD, $SQL_DATABASE);
  * @param {string} user - a username
  * @param {string} secret - a shared 320-bit base-32 encoded secret
  */
-function createUser($user, $secret) {
-	$query = 'INSERT INTO Users (Name, TOTP_Secret) VALUES (' . $user . ', ' . $secret . ')';
+function createUser(&$user, &$secret) {
+	static $stmt = $SQL->prepare('INSERT INTO Users (Name, TOTP_Secret) VALUES (?, ?)');
+	mysqli_stmt_bind_param($stmt, 'ss', $user, $secret);
 	
-	if($SQL->query($query)) {
-		return $secret;
-	} else {
-		return mysql_errno($SQL) . ": " . mysql_error($SQL);
-	}
+	return mysqli_stmt_execute($stmt);
 }
 
 /**
  * Returns the secret for a given username or an error message
  * @param {string} user - a username
  */
-function getSecret($user) {
-	$query = 'SELECT TOTP_Secret FROM Users WHERE Name="' . $user . '"';
+function checkTOTP(&$user) {
+	static $stmt = $SQL->prepare('SELECT TOTP_Secret FROM Users WHERE Name=?');
+	mysqli_stmt_bind_param($stmt, 's', $user);
 
-	if($secret = $SQL->query($query)) {
-		return $secret;
+	if(mysqli_stmt_execute($stmt)) {
+		return mysqli_fetch_assoc(mysqli_stmt_get_result($stmt))['TOTP_Secret'];
 	} else {
-		return mysql_errno($SQL) . ": " . mysql_error($SQL);
+		return false;
 	}
 }
 ?>

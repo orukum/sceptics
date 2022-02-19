@@ -1,9 +1,9 @@
 <?php
 /**
- * Generates a random nonce 192-bit nonce
+ * Generates a random nonce 96-bit nonce
  */
 function getNonce() {
-	return base64URL_encode(random_bytes(24));
+	return base64URL_encode(random_bytes(12));
 }
 
 /**
