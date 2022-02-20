@@ -16,6 +16,17 @@ function createUser(&$user, &$secret) {
 	return mysqli_stmt_execute($stmt);
 }
 
+function checkUser(&$user) {
+	static $stmt = $SQL->prepare('SELECT Id FROM Users WHERE Name=?');
+	mysqli_stmt_bind_param($stmt, 's', $user);
+
+	if(mysqli_stmt_execute($stmt)) {
+		return mysqli_num_rows(mysqli_stmt_get_result($stmt));
+	} else {
+		return false;
+	}
+}
+
 /**
  * Returns the secret for a given username or an error message
  * @param {string} user - a username

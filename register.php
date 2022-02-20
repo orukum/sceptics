@@ -5,6 +5,12 @@ require_once 'utils.php';
 session_start();
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
+	if($_POST['nonce'] != $_SESSION['nonces']['register'])
+		return http_response_code(400);
+
+	if(checkUser($_POST['username']) > 0)
+		return http_response_code(400);
+
 	
 	return http_response_code(405);
 } elseif($_SERVER['REQUEST_METHOD'] === 'GET') {
