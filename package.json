@@ -3,7 +3,7 @@
     "qrcode": "^1.5.0"
   },
   "scripts": {
-	  "copy": "mkdir -p lib && cp node_modules/qrcode/build/qrcode.js lib/qrcode.js",
+	  "copy": "mkdir -p scripts/libraries && cp node_modules/qrcode/build/qrcode.js scripts/libraries/qrcode.js",
 	  "update": "npm update && npm run copy"
   }
 }
