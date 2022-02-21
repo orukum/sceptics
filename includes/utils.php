@@ -14,6 +14,26 @@ function getSecret() {
 }
 
 /**
+ * Hashes and truncates a shared secret into a TOTP (from RFC 4226, RFC 6238)
+ * @param {string} secret - a shared 320-bit base-32 encoded secret
+ * @param {int} step - the number of intervals in the future or past
+ */
+function getTOTP(&$secret, $step = 0, $length = 6) {
+	$hs = hash_hmac('sha1', pack('N*', 0) . pack("N*", floor(time() / 30) + $step), $secret);
+	$snum = dynamicTruncation($hw) & 0x7FFFFFFF;
+ 	return str_pad($snum % pow(10, $length), $length, '0', STR_PAD_LEFT);
+}
+
+/**
+ * Dynamically truncates a HMAC-SHA-1 (from RFC 4226)
+ * @param {string} str - a hex string representing a HMAC-SHA-1
+ */
+function dynamicTruncation($str) {
+	$offset = hexdec(substr($str, -1));
+	return hexdec(substr($str, $offset * 2, 8));
+}
+
+/**
  * Transforms a byte string to a PHP base-32 string
  * @param {string} bytes - a byte string
  */
@@ -61,24 +81,5 @@ function base64URL_encode($bytes) {
  */
 function base64URL_decode($base64) {
 	return base64_decode(strtr($base64, '-_', '+/'));
-}
-
-/**
- * Dynamically truncates a HMAC-SHA-1 (from RFC 4226)
- * @param {string} str - a hex string representing a HMAC-SHA-1
- */
-function dynamicTruncation($str) {
-	$offset = hexdec(substr($str, -1)) * 2;
-	return hexdec(substr($str, $offset, 8)) & 0x7FFFFFFF;
-}
-
-/**
- * Hashes and truncates a shared secret into a TOTP (from RFC 4226, RFC 6238)
- * @param {string} secret - a shared 320-bit base-32 encoded secret
- * @param {int} step - the number of intervals in the future or past
- */
-function getTOTP($secret, $step = 0) {
-	$hs = hash_hmac('sha1', pack('N*', 0) . pack("N*", floor(time() / 30) + $step), $secret);
-	return dynamicTruncation($hs) % 1000000;
 }
 ?>
